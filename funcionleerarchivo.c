@@ -6,10 +6,8 @@ int main() {
 	FILE *image_in;
 	char name[50];
 	char *info = NULL;
-	lonf size;
+	long size;
 
-	scanf("%s", image_in);
-
-	imagein = fopen(image_in, "rb");
+	image_in = fopen(image_in, "rb");
 }
 
