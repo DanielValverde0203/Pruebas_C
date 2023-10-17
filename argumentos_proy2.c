@@ -52,6 +52,7 @@ int main (int argc, char *argv[]) {
 			return 0;
 		}
 
+		// Verifica que se incluya el argumento -i.
 		else if (strcmp(argv[i], "-i") == 0) {
 			
 			printf("Se guarda el tercer argumento como el nombre de la imagen.\n");
@@ -62,6 +63,7 @@ int main (int argc, char *argv[]) {
 
 		}
 
+		// Verifica que se incluya el argumento -o.
 		else if (strcmp(argv[i], "-o") == 0) {
 
 			printf("Se guarda el quinto argumento en una variable para usarlo como nombre del archivo resultante.\n");
