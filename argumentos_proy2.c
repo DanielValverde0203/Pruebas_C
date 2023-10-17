@@ -25,9 +25,17 @@ void ayuda () {
 	printf("Nota: se debe respetar el órden de argumentos presente en el ejemplo anterior.\n");
 }
 
-void checkear () {
+char *checkear (char *img_name) {
+	
+	char *format = NULL;
+        char *token = strtok(img_name, ".");
 
+        while (token != NULL){
+                format = token;
+                token = strtok(NULL, ".");
+        }
 
+	return format;
 }
 
 int main (int argc, char *argv[]) {
@@ -49,7 +57,8 @@ int main (int argc, char *argv[]) {
 			printf("Se guarda el tercer argumento como el nombre de la imagen.\n");
 			printf("Path img original: %s\n", argv[2]);
 			
-			checkear(argv[2]);
+			char *formato = checkear(argv[2]);
+			printf("Formato: %s\n", formato);
 
 		}
 
