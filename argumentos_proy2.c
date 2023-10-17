@@ -25,12 +25,17 @@ void ayuda () {
 	printf("Nota: se debe respetar el órden de argumentos presente en el ejemplo anterior.\n");
 }
 
-int main(int argc, char *argv[]) {
+void checkear () {
+
+
+}
+
+int main (int argc, char *argv[]) {
 	if (argc == 1) {
 		printf("Ingrese más argumentos\n");
 		return 1;
 	}
-
+	
 	for (int i=1; i < argc; i++) {
 
 		// Este argumento se debe poner solo ya que solamente imprime el mensaje de ayuda y termina el programa.
@@ -40,9 +45,12 @@ int main(int argc, char *argv[]) {
 		}
 
 		else if (strcmp(argv[i], "-i") == 0) {
-
+			
 			printf("Se guarda el tercer argumento como el nombre de la imagen.\n");
 			printf("Path img original: %s\n", argv[2]);
+			
+			checkear(argv[2]);
+
 		}
 
 		else if (strcmp(argv[i], "-o") == 0) {
