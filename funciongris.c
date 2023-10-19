@@ -19,16 +19,12 @@ void Grayscale(uint8_t* image, int width, int height) {
 }
 
 int main() {
-    int width = 640; // Width of the image
-    int height = 480; // Height of the image
-    uint8_t* image = (uint8_t)malloc(width height * 3); // Assuming 3 channels (RGB)
+    int width = 640; // Width 
+    int height = 480; // Height 
+    uint8_t* image = (uint8_t)malloc(width height * 3); // (RGB)
 
-    // Fill 'image' with your image data
-
-    // Call the function to convert to grayscale
+    // llama funcion
     Grayscale(image, width, height);
-
-    // Now 'image' contains the grayscale version of the original image
 
     free(image);
 
