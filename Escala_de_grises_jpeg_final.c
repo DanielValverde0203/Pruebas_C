@@ -13,7 +13,8 @@ void jpegToGrayscale(const char* inputPath, const char* outputPath) {
         fprintf(stderr, "Error opening input file\n");
         return;
     }
-
+    
+    //estructuras para descomprimir el archivo
     cinfo.err = jpeg_std_error(&jerr);
     jpeg_create_decompress(&cinfo);
     jpeg_stdio_src(&cinfo, infile);
