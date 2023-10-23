@@ -7,14 +7,14 @@
 
 #include "ayuda.h"
 
-void jpegToGrayscale(FILE *infile, FILE *outfile) {
+void jpegToGrayscale(FILE *imagen_ent, FILE *imagen_salid) {
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
 
     //estructuras para descomprimir el archivo
     cinfo.err = jpeg_std_error(&jerr);
     jpeg_create_decompress(&cinfo);
-    jpeg_stdio_src(&cinfo, infile);
+    jpeg_stdio_src(&cinfo, imagen_ent);
     jpeg_read_header(&cinfo, TRUE);
 
     // configuracion para el color de salida
@@ -27,7 +27,7 @@ void jpegToGrayscale(FILE *infile, FILE *outfile) {
     //estructuras para comprimir el archivo
     cinfo_out.err = jpeg_std_error(&jerr_out);
     jpeg_create_compress(&cinfo_out);
-    jpeg_stdio_dest(&cinfo_out, outfile);
+    jpeg_stdio_dest(&cinfo_out, imagen_salid);
 
     //Parametros para la nueva imagen de salida
     cinfo_out.image_width = cinfo.output_width;
@@ -59,18 +59,18 @@ void jpegToGrayscale(FILE *infile, FILE *outfile) {
     free(row_buffer[0]);
 }
 
-void gray_scale_png(FILE *in_img, FILE *out_img) {
+void gray_scale_png(FILE *imagen_ent, FILE *imagen_salid) {
 
         //invocar funciones para el proceso de lectura de informacion de un archivo png 
         png_structp leer_png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
         png_infop info_r = png_create_info_struct(leer_png);
-        png_init_io(leer_png, in_img);
+        png_init_io(leer_png, imagen_ent);
         png_read_info(leer_png, info_r);
 
         //invocar funciones para el proceso de escritura de un archivo png
         png_structp w_png = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
         png_infop w_info = png_create_info_struct(w_png);
-        png_init_io(w_png, out_img);
+        png_init_io(w_png, imagen_salid);
 
         // parametros de los archivos de lectura y escritura
         png_uint_32 width, height;
@@ -100,7 +100,7 @@ void gray_scale_png(FILE *in_img, FILE *out_img) {
         free(row);
 }
 
-void jpegRotate180(FILE *infile, FILE *outfile) {
+void jpegRotate180(FILE *imagen_ent, FILE *imagen_salid) {
 
     //Estructura para descomprimir el archivo
     struct jpeg_decompress_struct cinfo;
@@ -108,7 +108,7 @@ void jpegRotate180(FILE *infile, FILE *outfile) {
     cinfo.err = jpeg_std_error(&jerr);
 
     jpeg_create_decompress(&cinfo);
-    jpeg_stdio_src(&cinfo, infile);
+    jpeg_stdio_src(&cinfo, imagen_ent);
 
     jpeg_read_header(&cinfo, TRUE);
     jpeg_start_decompress(&cinfo);
@@ -135,7 +135,7 @@ void jpegRotate180(FILE *infile, FILE *outfile) {
     struct jpeg_compress_struct cinfo_out;
     cinfo_out.err = jpeg_std_error(&jerr);
     jpeg_create_compress(&cinfo_out);
-    jpeg_stdio_dest(&cinfo_out, outfile);
+    jpeg_stdio_dest(&cinfo_out, imagen_salid);
 
     //parametros para la imagen de salida
     cinfo_out.image_width = height;
