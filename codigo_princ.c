@@ -7,7 +7,7 @@
 
 #include "ayuda.h"
 
-void jpegToGrayscale(FILE *imagen_ent, FILE *imagen_salid) {
+void gray_scale_jpeg(FILE *imagen_ent, FILE *imagen_salid) {
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
 
@@ -100,7 +100,7 @@ void gray_scale_png(FILE *imagen_ent, FILE *imagen_salid) {
         free(row);
 }
 
-void jpegRotate180(FILE *imagen_ent, FILE *imagen_salid) {
+void rotate_jpeg(FILE *imagen_ent, FILE *imagen_salid) {
 
     //Estructura para descomprimir el archivo
     struct jpeg_decompress_struct cinfo;
@@ -200,13 +200,9 @@ int main (int argc, char *argv[]) {
 		// Verifica que se incluya el argumento -i.
 		else if (strcmp(argv[i], "-i") == 0) {
 			
-			printf("Path img original: %s\n", argv[2]);
-			
 			image_in = fopen(argv[2],"r");
 
 			formato = checkear(argv[2]);
-
-			printf("Formato: %s\n", formato);
 
 		}
 
@@ -214,8 +210,6 @@ int main (int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-o") == 0) {
 			
 			image_out = fopen(argv[4], "w+");
-			
-			printf("Path img resultante: %s\n", argv[4]);
 		}
 	}
 	
@@ -223,8 +217,7 @@ int main (int argc, char *argv[]) {
 	
 		if (strcmp(formato, "jpeg") == 0){
                         
-			jpegRotate180(image_in, image_out);
-			printf("Rotar jpeg\n");
+			rotate_jpeg(image_in, image_out);
                 }
                 else if (strcmp(formato, "png") == 0){
                         //llamar_funcion_rotate_png()
@@ -236,13 +229,11 @@ int main (int argc, char *argv[]) {
 	
 		if (strcmp(formato, "jpeg") == 0){
 
-			jpegToGrayscale(image_in, image_out);
-                	printf("Gris jpeg\n");
+			gray_scale_jpeg(image_in, image_out);
 		}
                 else if (strcmp(formato, "png") == 0){
                         
 			gray_scale_png(image_in, image_out);
-                	printf("Gris png\n");
 		}
 	}
 
