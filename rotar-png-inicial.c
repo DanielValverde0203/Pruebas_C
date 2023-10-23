@@ -1,15 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "include/png.h"
 #include <math.h>
-
-
+#include <png.h>
 
 //Funcion para rotar la imagen
 void rotateImagePng(const char *img_entrada, const char *img_salida) {
    	//abrir archivos de entrada y salida en formato de lectura y escritura respectivamente	
-	FILE *in_img = fopen(img_entrada, "rb");
+	    FILE *in_img = fopen(img_entrada, "rb");
     	FILE *out_img = fopen(img_salida, "wb");
 
 	//invocar funciones para el proceso de lectura de informacion de un archivo png 
@@ -25,42 +23,41 @@ void rotateImagePng(const char *img_entrada, const char *img_salida) {
 
 	// parametros de los archivos de lectura y escritura
     	png_uint_32 width, height;
+      
     	int bit_depth, color_type, interlace_method, compression_type, filter_method;
     	png_get_IHDR(leer_png, info_r, &width, &height, &bit_depth, &color_type, &interlace_method, &compression_type, &filter_method);
-    	png_set_IHDR(w_png, w_info, width, height, 8, PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
-    	png_write_info(w_png, w_info);
+    	png_set_IHDR(w_png, w_info, width, height, bit_depth, color_type, interlace_method, compression_type, filter_method);
+      png_write_info(w_png, w_info);
 
-      png_bytepp row_pointers_original = png_get_rows(leer_png, info_r);
 
-      png_bytepp row_pointers_new = (png_bytepp)png_malloc(w_png, sizeof(png_bytepp) * height);
+      png_bytepp* row_pointers_original = (png_bytep*)malloc(sizeof(png_bytep) * height);
       for (int i = 0; i < height; i++) {
-        row_pointers_new[i] = (png_bytep)png_malloc(w_png, width);
+        row_pointers_original[i] = (png_byte*)malloc(png_get_rowbytes(leer_png, info_r));
       }
-
-
-      // Convertir el ángulo a radianes
-      int angle = 90;
-      float angle_rad = angle * M_PI / 180.0f;
-
-      // Crear una matriz de rotación
-      float rotation_matrix[2][2] = {
-        {cos(angle_rad), -sin(angle_rad)},
-        {sin(angle_rad), cos(angle_rad)}
-      };
-
+      png_read_image(leer_png, row_pointers_original);
+      
+  
+      png_bytepp** row_pointers_new = row_pointers_original;
+  
       // Iterar sobre los píxeles de la imagen original
-      for (int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
-          // Calcular la posición del píxel rotado
-          int x = i * rotation_matrix[0][0] + j * rotation_matrix[0][1];
-          int y = i * rotation_matrix[1][0] + j * rotation_matrix[1][1];
+      for (int i = 0; i < height; i++) { //rows
+        for (int j = 0; j < width/2; j++) { //cols
 
-          // Copiar el píxel a la imagen rotada
-          if (x >= 0 && x < width && y >= 0 && y < height) {
-            row_pointers_new[y][x] = row_pointers_original[j][i];
-          }
+            row_pointers_new[i][j] = row_pointers_original[i][width - j-1];
+            row_pointers_new[i][width - j-1] = row_pointers_original[i][j];
+  
         }
       }
+
+      // Iterar sobre los píxeles de la imagen original
+      for (int i = 0; i < height/2; i++) { //rows
+        for (int j = 0; j < width; j++) { //cols
+            png_bytep** d = row_pointers_new[i][j];
+            row_pointers_new[i][j] = row_pointers_new[height - i-1][j];
+            row_pointers_new[height - i-1][j] = d;
+        }
+      }
+      
 
       png_write_image(w_png, row_pointers_new);
 
@@ -82,8 +79,7 @@ int main(int argc, char *argv[]) {
     return 1;
   }
   */
-
-  rotateImagePng("/home/prichavarria/Downloads/pinkpinkpink.png", "/home/prichavarria/Downloads/pinkpinkpink-ROTATED.png");
+  rotateImagePng("/home/prichavarria/Downloads/lapiz.png", "/home/prichavarria/Downloads/lapiz-ROTATED.png");
   
+  return 0;
 }
-  
